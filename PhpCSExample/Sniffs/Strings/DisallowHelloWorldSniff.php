@@ -68,6 +68,6 @@ class DisallowHelloWorldSniff implements Sniff
 	public function process(File $phpcsFile, $stackPtr)
 	{
 		$tokens = $phpcsFile->getTokens();
-		
+
 	}
 }
