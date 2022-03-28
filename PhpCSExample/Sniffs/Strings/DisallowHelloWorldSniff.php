@@ -68,17 +68,34 @@ class DisallowHelloWorldSniff implements Sniff
 	public function process(File $phpcsFile, $stackPtr)
 	{
 		$tokens = $phpcsFile->getTokens();
-
 		$content = \strtolower($tokens[$stackPtr]['content']);
-		
-		// Check for a string containing a hello world in it.
-		if (strpos($content, 'hello world') !== false) {
+
+		// echo is a construct that will output one or more expressions with no additional newlines or spaces.
+		// Check if the next token is a comma, and if the previous non whitespace token is an echo.
+		$previousPtr = $phpcsFile->findPrevious(\T_WHITESPACE, $stackPtr - 1, null, true, null, true);
+
+		if ($tokens[$stackPtr + 1]['code'] === \T_COMMA && $tokens[$previousPtr]['code'] === \T_ECHO) {
+			$nextString = $phpcsFile->findnext(\T_CONSTANT_ENCAPSED_STRING, $stackPtr + 1, null, false, null, true);
+			$nextContent = \strtolower($tokens[$nextString]['content']);
+
+			if (strpos($content, 'hello') !== false && preg_match('/\s+world/', $nextContent) !== 0) {
+				$phpcsFile->addWarning(
+					'Hello World found. How very dare you?!',
+					$stackPtr,
+					'helloWorldUsageDetected'
+				);
+				return;
+			}
+		}
+
+		// Check for a string containing a hello world in it. No matter how many spaces there are between the two words.
+		if (preg_match('/hello\s+world/', $content) !== 0) {
 			$phpcsFile->addWarning(
 				'Hello World found. How very dare you?!',
 				$stackPtr,
 				'helloWorldUsageDetected'
 			);
+			return;
 		}
-
 	}
 }
