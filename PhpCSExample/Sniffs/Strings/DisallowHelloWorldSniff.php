@@ -4,6 +4,7 @@ namespace MyCoolStandard\PhpCSExample\Sniffs\Strings;
 
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHPCSUtils\Utils\TextStrings;
 
 class DisallowHelloWorldSniff implements Sniff
 {
@@ -96,6 +97,30 @@ class DisallowHelloWorldSniff implements Sniff
 				'helloWorldUsageDetected'
 			);
 			return;
+		}
+
+		// If we found hello, check where the next world string is.
+		// Now check every stack token in between. If all of them are empty string, throw a notice.
+		if (preg_match('/(\s?)+hello\s+$/', $content) !== 0) {
+			$nextSemicolon = $phpcsFile->findnext(\T_SEMICOLON, $stackPtr + 1, null, false, null, true);
+
+			if ($nextSemicolon - $stackPtr > 1) {
+				for ($ptr = $stackPtr + 1; $stackPtr < $nextSemicolon; $ptr++) {
+					$loopContent = TextStrings::stripQuotes(strtolower($tokens[$ptr]['content']));
+
+					if (
+						$tokens[$ptr]['code'] === \T_CONSTANT_ENCAPSED_STRING
+						&& preg_match('/(\s?)+world/', $loopContent) === 1
+					) {
+						$phpcsFile->addWarning(
+							'Hello World found. How very dare you?!',
+							$ptr,
+							'helloWorldUsageDetected'
+						);
+						return;
+					}
+				}
+			}
 		}
 	}
 }
