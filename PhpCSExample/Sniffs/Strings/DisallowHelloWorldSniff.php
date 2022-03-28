@@ -95,7 +95,6 @@ class DisallowHelloWorldSniff implements Sniff
 				$stackPtr,
 				'helloWorldUsageDetected'
 			);
-			return;
 		}
 	}
 }
