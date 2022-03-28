@@ -69,5 +69,16 @@ class DisallowHelloWorldSniff implements Sniff
 	{
 		$tokens = $phpcsFile->getTokens();
 
+		$content = \strtolower($tokens[$stackPtr]['content']);
+		
+		// Check for a string containing a hello world in it.
+		if (strpos($content, 'hello world') !== false) {
+			$phpcsFile->addWarning(
+				'Hello World found. How very dare you?!',
+				$stackPtr,
+				'helloWorldUsageDetected'
+			);
+		}
+
 	}
 }

@@ -30,8 +30,7 @@ class DisallowHelloWorldUnitTest extends AbstractSniffUnitTest
 			3 => 1,
 			5 => 1,
 			6 => 1,
-			10 => 1,
-			11 => 1,
+			9 => 1,
 		];
 	}
 }
