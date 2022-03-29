@@ -75,7 +75,7 @@ class DisallowHelloWorldSniff implements Sniff
 		$previousPtr = $phpcsFile->findPrevious(\T_WHITESPACE, $stackPtr - 1, null, true, null, true);
 
 		if ($tokens[$stackPtr + 1]['code'] === \T_COMMA && $tokens[$previousPtr]['code'] === \T_ECHO) {
-			$nextString = $phpcsFile->findnext(\T_CONSTANT_ENCAPSED_STRING, $stackPtr + 1, null, false, null, true);
+			$nextString = $phpcsFile->findNext(\T_CONSTANT_ENCAPSED_STRING, $stackPtr + 1, null, false, null, true);
 			$nextContent = \strtolower($tokens[$nextString]['content']);
 
 			if (strpos($content, 'hello') !== false && preg_match('/\s+world/', $nextContent) !== 0) {
