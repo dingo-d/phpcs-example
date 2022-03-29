@@ -1,0 +1,25 @@
+<documentation title="Disallow Hello World string">
+    <standard>
+    <![CDATA[
+      We must prohibit all Hello World strings in your text!
+    ]]>
+    </standard>
+    <code_comparison>
+        <code title="Valid: Having no Hello World in your code">
+        <![CDATA[
+echo 'Hello you magnificent person!';
+        ]]>
+        </code>
+        <code title="Invalid: Using Hello World, in any case, inside your code">
+        <![CDATA[
+class HelloWorldClass
+{
+    public function greetTheWorld()
+    {
+        return 'Hello world!';g
+    }
+}
+        ]]>
+        </code>
+    </code_comparison>
+</documentation>
