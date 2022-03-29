@@ -27,3 +27,10 @@ return 'hello
 world'; // Bad.
 
 '    Hello     world'; // Bad.
+
+return 'hello
+
+
+great
+     
+world'; // Ok.

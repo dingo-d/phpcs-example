@@ -108,10 +108,17 @@ class DisallowHelloWorldSniff implements Sniff
 				for ($ptr = $stackPtr + 1; $stackPtr < $nextSemicolon; $ptr++) {
 					$loopContent = TextStrings::stripQuotes(strtolower($tokens[$ptr]['content']));
 
-					if (
-						$tokens[$ptr]['code'] === \T_CONSTANT_ENCAPSED_STRING
-						&& preg_match('/(\s?)+world/', $loopContent) === 1
-					) {
+					// if there is anything between the hello string and world string,
+					// that is not an empty string/line, bail out.
+					if ($tokens[$ptr]['code'] !== \T_CONSTANT_ENCAPSED_STRING) {
+						break;
+					}
+
+					if (preg_match('/\S/', $loopContent) === 1 && preg_match('/(\s?)+world/', $loopContent) === 0) {
+						break;
+					}
+
+					if (preg_match('/(\s?)+world/', $loopContent) === 1) {
 						$phpcsFile->addWarning(
 							'Hello World found. How very dare you?!',
 							$ptr,
