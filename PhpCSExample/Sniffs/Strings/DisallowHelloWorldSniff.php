@@ -102,7 +102,7 @@ class DisallowHelloWorldSniff implements Sniff
 		// If we found hello, check where the next world string is.
 		// Now check every stack token in between. If all of them are empty string, throw a notice.
 		if (preg_match('/(\s?)+hello\s+$/', $content) !== 0) {
-			$nextSemicolon = $phpcsFile->findnext(\T_SEMICOLON, $stackPtr + 1, null, false, null, true);
+			$nextSemicolon = $phpcsFile->findNext(\T_SEMICOLON, $stackPtr + 1, null, false, null, true);
 
 			if ($nextSemicolon - $stackPtr > 1) {
 				for ($ptr = $stackPtr + 1; $stackPtr < $nextSemicolon; $ptr++) {
