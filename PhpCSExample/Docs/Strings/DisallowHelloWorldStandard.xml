@@ -16,7 +16,7 @@ class HelloWorldClass
 {
     public function greetTheWorld()
     {
-        return 'Hello world!';g
+        return 'Hello world!';
     }
 }
         ]]>
