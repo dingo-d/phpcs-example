@@ -34,3 +34,5 @@ return 'hello
 great
      
 world'; // Ok.
+
+echo "hello\nworld"; // Bad.
